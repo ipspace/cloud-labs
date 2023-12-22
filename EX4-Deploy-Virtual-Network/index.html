@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Ivan Pepelnjak, ipSpace.net AG">
+        <link rel="canonical" href="https://ipspace.github.io/cloud-labs/EX4-Deploy-Virtual-Network/">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Deploy a Virtual Network Infrastructure - Data Center</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Data Center</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Challenges <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../EX1-Define-Requirements/" class="dropdown-item">Define the Requirements</a>
+</li>
+                                    
+<li>
+    <a href="../EX2-Infrastructure-as-Code/" class="dropdown-item">Simple Infrastructure-as-Code Setup</a>
+</li>
+                                    
+<li>
+    <a href="../EX3-Deploy-Web-Server/" class="dropdown-item">Deploy a Cloud-Based Web Server</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active">Deploy a Virtual Network Infrastructure</a>
+</li>
+                                    
+<li>
+    <a href="../EX5-Deploy-IPv6/" class="dropdown-item">Deploy IPv6 in Your Cloud Virtual Network</a>
+</li>
+                                    
+<li>
+    <a href="../EX6-Security/" class="dropdown-item">Secure Your Virtual Network Infrastructure</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../EX3-Deploy-Web-Server/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../EX5-Deploy-IPv6/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3">
+<div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+          <span class="fa fa-angle-down"></span>
+      </button>
+  </div>
+
+  
+  
+  
+  
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary"  style="margin-bottom: 1em;">
+      <ul class="nav flex-column">
+          
+      <li class="nav-item" data-level="1"><a href="#deploy-a-virtual-network-infrastructure" class="nav-link">Deploy a Virtual Network Infrastructure</a>
+        <ul class="nav flex-column">
+      <li class="nav-item" data-level="2"><a href="#when-using-aws" class="nav-link">When Using AWS</a>
+        <ul class="nav flex-column">
+        </ul>
+      </li>
+      <li class="nav-item" data-level="2"><a href="#when-using-azure" class="nav-link">When Using Azure</a>
+        <ul class="nav flex-column">
+        </ul>
+      </li>
+      <li class="nav-item" data-level="2"><a href="#complete-the-deployment" class="nav-link">Complete the deployment</a>
+        <ul class="nav flex-column">
+        </ul>
+      </li>
+      <li class="nav-item" data-level="2"><a href="#connectivity-tests" class="nav-link">Connectivity tests</a>
+        <ul class="nav flex-column">
+        </ul>
+      </li>
+      <li class="nav-item" data-level="2"><a href="#wrap-up" class="nav-link">Wrap Up</a>
+        <ul class="nav flex-column">
+        </ul>
+      </li>
+        </ul>
+      </li>
+      </ul>
+    </div>
+  
+  
+  <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <ul class="nav flex-column">
+        
+    
+        
+    
+    <li class="nav-item" data-level="">
+      
+        <a class="nav-link">Challenges</a>
+      
+      
+        <ul class="nav flex-column">
+    
+    <li class="nav-item" data-level="">
+      
+        <a href="../EX1-Define-Requirements/" class="nav-link">Define the Requirements</a>
+      
+      
+    </li>
+    
+    
+    <li class="nav-item" data-level="">
+      
+        <a href="../EX2-Infrastructure-as-Code/" class="nav-link">Simple Infrastructure-as-Code Setup</a>
+      
+      
+    </li>
+    
+    
+    <li class="nav-item" data-level="">
+      
+        <a href="../EX3-Deploy-Web-Server/" class="nav-link">Deploy a Cloud-Based Web Server</a>
+      
+      
+    </li>
+    
+    
+    <li class="nav-item" data-level="">
+      
+        <a href="./" class="nav-link">Deploy a Virtual Network Infrastructure</a>
+      
+      
+    </li>
+    
+    
+    <li class="nav-item" data-level="">
+      
+        <a href="../EX5-Deploy-IPv6/" class="nav-link">Deploy IPv6 in Your Cloud Virtual Network</a>
+      
+      
+    </li>
+    
+    
+    <li class="nav-item" data-level="">
+      
+        <a href="../EX6-Security/" class="nav-link">Secure Your Virtual Network Infrastructure</a>
+      
+      
+    </li>
+    
+        </ul>
+      
+    </li>
+    
+    </ul>
+  </div>
+
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="deploy-a-virtual-network-infrastructure">Deploy a Virtual Network Infrastructure</h1>
+<p>In the <a href="../EX3-Deploy-Web-Server/">previous hands-on exercise</a>, you deployed a virtual machine into a default VPC (AWS)<br />
+or used auto-created networking objects to simplify your deployment (Azure). In this exercise, you&rsquo;ll create a full-blown custom networking infrastructure using the infrastructure-as-code tool of your choice.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You&rsquo;re highly encouraged to create networking infrastructure relevant to an actual problem you&rsquo;re facing, as long as it includes most of the components you&rsquo;re expected to use and is simple enough to be completed in a reasonable amount of time.</p>
+</div>
+<h2 id="when-using-aws">When Using AWS</h2>
+<ul>
+<li>Create a VPC and two subnets (public and private).</li>
+<li>Create an Internet Gateway and associate it with the VPC</li>
+<li>Create a route table for the public subnet and add a default route pointing to the Internet gateway</li>
+<li>Adjust the default security group to allow HTTP, HTTPS, and SSH access to all virtual machines. Use GUI if necessary.</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li>Create an elastic IP address and an elastic network interface.</li>
+</ul>
+<h2 id="when-using-azure">When Using Azure</h2>
+<ul>
+<li>Create a VNet and two subnets (public and private).</li>
+<li>Create a route table that prevents Internet access from virtual machines in the private subnet</li>
+<li>Use <strong>open_ports</strong> parameter of <strong>azure_rm_virtualmachine</strong> Ansible module (or equivalent CLI/Terraform parameter) to enable HTTP, HTTPS, and SSH access to all VM instances</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li>Create public IP addresses and VM NICs for virtual machines in the public subnet</li>
+</ul>
+<h2 id="complete-the-deployment">Complete the deployment</h2>
+<ul>
+<li>Deploy a web server in the public subnet (use the tools you created in the previous exercise to deploy it).</li>
+<li>Deploy an SSH jump host in the public subnet.</li>
+<li>Deploy another VM instance in the private subnet.</li>
+</ul>
+<h2 id="connectivity-tests">Connectivity tests</h2>
+<p><strong>Verify that:</strong></p>
+<ul>
+<li>You can open an SSH session to the web server and jump host from the Internet;</li>
+<li>You can download a web page from the web server;</li>
+<li>Jump host can open an SSH session to a VM instance in the private subnet;</li>
+<li>The VM instance in the private subnet cannot reach destinations outside of your virtual network.</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li>Write an automated test suite (for example, an Ansible playbook).</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you use Ansible, use <strong>delegate_to</strong> or SSH proxy functionality to access VM instances through the jump host.</p>
+</div>
+<h2 id="wrap-up">Wrap Up</h2>
+<p>To complete the exercise, commit your work and a short description of what you did (preferably in Markdown format) to your Git repository and push the changes to your hosted repository.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+<hr>
+    <p>(C) 2023 Ivan Pepelnjak (ipSpace.net AG)</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
