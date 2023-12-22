@@ -1,6 +1,6 @@
 # MKDOCS navigation structure and configuration
 ---
-site_name: Data Center
+site_name: Cloud Networking
 docs_dir: docs
 site_dir: _html
 repo_url: https://github.com/ipspace/cloud-labs
